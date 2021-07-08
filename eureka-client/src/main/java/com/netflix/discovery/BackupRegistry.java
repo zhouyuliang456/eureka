@@ -32,6 +32,10 @@ import com.netflix.discovery.shared.Applications;
  * @author Karthik Ranganathan
  *
  */
+
+/**
+ * 备份注册中心信息，当时Eureka-client 启动时，无法从Eureka-server读取注册信息，就从备份注册中心读取注册信息
+ */
 @ImplementedBy(NotImplementedRegistryImpl.class)
 public interface BackupRegistry {
 

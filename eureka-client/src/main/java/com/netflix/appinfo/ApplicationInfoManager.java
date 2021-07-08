@@ -55,12 +55,29 @@ public class ApplicationInfoManager {
         }
     };
 
+    /**
+     * 单例
+     */
     private static ApplicationInfoManager instance = new ApplicationInfoManager(null, null, null);
 
+    /**
+     * 状态变更监听器
+     */
     protected final Map<String, StatusChangeListener> listeners;
+
+    /**
+     * 应用实例状态匹配
+     */
     private final InstanceStatusMapper instanceStatusMapper;
 
+    /**
+     * 应用实例信息
+     */
     private InstanceInfo instanceInfo;
+
+    /**
+     * 应用实例配置
+     */
     private EurekaInstanceConfig config;
 
     public static class OptionalArgs {
@@ -163,6 +180,7 @@ public class ApplicationInfoManager {
      * of a status change event.
      *
      * @param status Status of the instance
+     *  设置应用实例信息状态
      */
     public synchronized void setInstanceStatus(InstanceStatus status) {
         InstanceStatus next = instanceStatusMapper.map(status);
@@ -182,6 +200,7 @@ public class ApplicationInfoManager {
         }
     }
 
+    // 注册应用实例状态变更监听器
     public void registerStatusChangeListener(StatusChangeListener listener) {
         listeners.put(listener.getId(), listener);
     }

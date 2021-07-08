@@ -157,6 +157,7 @@ public class EurekaBootStrap implements ServletContextListener {
 
         ApplicationInfoManager applicationInfoManager = null;
 
+        // Eureka Server 中内嵌Eureka Client，用于和其他Server集群中的节点进行通信
         if (eurekaClient == null) {
             EurekaInstanceConfig instanceConfig = isCloud(ConfigurationManager.getDeploymentContext())
                     ? new CloudInstanceConfig()
@@ -190,6 +191,7 @@ public class EurekaBootStrap implements ServletContextListener {
             );
         }
 
+        // Eureka-Server 集群节点集合
         PeerEurekaNodes peerEurekaNodes = getPeerEurekaNodes(
                 registry,
                 eurekaServerConfig,
@@ -198,6 +200,7 @@ public class EurekaBootStrap implements ServletContextListener {
                 applicationInfoManager
         );
 
+        // Eureka Server 上下文
         serverContext = new DefaultEurekaServerContext(
                 eurekaServerConfig,
                 serverCodecs,
@@ -206,15 +209,17 @@ public class EurekaBootStrap implements ServletContextListener {
                 applicationInfoManager
         );
 
+        // 初始化 EurekaServerContextHolder  Eureka Server上下文的持有者，通过其可以方便的获取到Eureka Server上下文
         EurekaServerContextHolder.initialize(serverContext);
 
         serverContext.initialize();
         logger.info("Initialized server context");
 
+        // 从其他Eureka-Server 拉取注册信息，实现的是集群同步的功能
         // Copy registry from neighboring eureka node
         int registryCount = registry.syncUp();
         registry.openForTraffic(applicationInfoManager, registryCount);
-
+        // 注册监控信息
         // Register all monitoring statistics.
         EurekaMonitors.registerAllStats();
     }

@@ -109,6 +109,8 @@ public interface EurekaServerConfig {
      * </p>
      *
      * @return true to enable self preservation, false otherwise.
+     *
+     *  是否开启自我保护模式
      */
     boolean shouldEnableSelfPreservation();
 
@@ -124,6 +126,8 @@ public interface EurekaServerConfig {
      *
      * @return value between 0 and 1 indicating the percentage. For example,
      *         <code>85%</code> will be specified as <code>0.85</code>.
+     *
+     * 开启自我保护模式比例，超过该比例后开启自我保护模式。
      */
     double getRenewalPercentThreshold();
 
@@ -132,6 +136,8 @@ public interface EurekaServerConfig {
      * {@link #getRenewalPercentThreshold()} needs to be updated.
      *
      * @return time in milliseconds indicating the interval.
+     *
+     * 自我保护模式比例更新定时任务执行频率，单位：毫秒。
      */
     int getRenewalThresholdUpdateIntervalMs();
 
@@ -155,6 +161,8 @@ public interface EurekaServerConfig {
      * </p>
      *
      * @return timer in milliseconds indicating the interval.
+     *
+     * Eureka-Server 集群节点更新频率，单位：毫秒
      */
     int getPeerEurekaNodesUpdateIntervalMs();
 
@@ -197,6 +205,8 @@ public interface EurekaServerConfig {
      * registration information.
      *
      * @return time in milliseconds.
+     *
+     * Eureka-Server 启动时，从远程 Eureka-Server 读取不到注册信息时，多长时间不允许 Eureka-Client 访问。
      */
     int getWaitTimeInMsWhenSyncEmpty();
 
@@ -246,6 +256,8 @@ public interface EurekaServerConfig {
      * clients to retrieve the value without missing it.
      *
      * @return time in milliseconds
+     *
+     * 租约变更记录过期时长，单位：毫秒。默认值 ： 3 60 1000 毫秒
      */
     long getRetentionTimeInMSInDeltaQueue();
 
@@ -254,6 +266,8 @@ public interface EurekaServerConfig {
      * check for expired delta information.
      *
      * @return time in milliseconds.
+     *
+     * 移除队列里过期的租约变更记录的定时任务执行频率，单位：毫秒。默认值 ：30 * 1000 毫秒
      */
     long getDeltaRetentionTimerIntervalInMs();
 
@@ -262,6 +276,8 @@ public interface EurekaServerConfig {
      * wake up and run.
      *
      * @return time in milliseconds.
+     *
+     * 租约过期定时任务执行频率，单位：毫秒。
      */
     long getEvictionIntervalTimerInMs();
 
@@ -300,6 +316,8 @@ public interface EurekaServerConfig {
      * if it is not invalidated by change events.
      *
      * @return time in seconds.
+     *
+     * 读写缓存写入后过期时间，单位：秒
      */
     long getResponseCacheAutoExpirationInSeconds();
 
@@ -308,6 +326,7 @@ public interface EurekaServerConfig {
      * be updated.
      *
      * @return time in milliseconds.
+     * 只读缓存更新频率，单位：毫秒
      */
     long getResponseCacheUpdateIntervalMs();
 
@@ -317,6 +336,9 @@ public interface EurekaServerConfig {
      * that caches without expiry.
      *
      * @return true if the read only cache is to be used
+     *
+     *
+     * 是否开启只读请求响应缓存
      */
     boolean shouldUseReadOnlyResponseCache();
 
@@ -373,6 +395,8 @@ public interface EurekaServerConfig {
      * </p>
      *
      * @return true, to synchronize, false otherwise.
+     *
+     * 是否同步应用实例信息，当应用实例信息最后更新时间戳( lastDirtyTimestamp )发生改变
      */
     boolean shouldSyncWhenTimestampDiffers();
 
@@ -381,6 +405,8 @@ public interface EurekaServerConfig {
      * information from the peers during startup.
      *
      * @return the number of retries
+     *
+     * Eureka-Server 启动时，从远程 Eureka-Server 读取失败重试次数
      */
     int getRegistrySyncRetries();
 
@@ -389,6 +415,8 @@ public interface EurekaServerConfig {
      * more retries to attempt.
      *
      * @return the wait time in ms between each sync retries
+     *
+     * Eureka-Server 启动时，从远程 Eureka-Server 读取失败等待( sleep )间隔，单位：毫秒
      */
     long getRegistrySyncRetryWaitMs();
 
@@ -403,6 +431,8 @@ public interface EurekaServerConfig {
      *
      * @return the maximum number of replication events that can be allowed to
      *         back up.
+     *
+     * 待执行同步应用实例信息事件缓冲最大数量
      */
     int getMaxElementsInPeerReplicationPool();
 
@@ -424,6 +454,8 @@ public interface EurekaServerConfig {
      * Get the maximum number of threads to be used for replication.
      *
      * @return maximum number of threads to be used for replication.
+     *
+     * 同步应用实例信息最大线程数
      */
     int getMaxThreadsForPeerReplication();
 
@@ -447,6 +479,8 @@ public interface EurekaServerConfig {
      * replication events.
      *
      * @return time in milliseconds
+     *
+     * 执行单个同步应用实例信息状态任务最大时间
      */
     int getMaxTimeForReplication();
 
@@ -581,6 +615,8 @@ public interface EurekaServerConfig {
      * application in the local region, will be disabled.
      *
      * @return {@code true} if the old behavior is to be disabled.
+     *
+     * 是否禁用本地读取不到注册信息，从远程 Eureka-Server 读取
      */
     boolean disableTransparentFallbackToOtherRegion();
 
@@ -608,12 +644,15 @@ public interface EurekaServerConfig {
 
     /**
      * Indicates whether the rate limiter should be enabled or disabled.
+     * 请求限流是否开启
      */
     boolean isRateLimiterEnabled();
 
     /**
      * Indicate if rate limit standard clients. If set to false, only non standard clients
      * will be rate limited.
+     *
+     * 是否对标准客户端判断是否限流
      */
     boolean isRateLimiterThrottleStandardClients();
 
@@ -625,18 +664,23 @@ public interface EurekaServerConfig {
     /**
      * Rate limiter, token bucket algorithm property. See also {@link #getRateLimiterRegistryFetchAverageRate()}
      * and {@link #getRateLimiterFullFetchAverageRate()}.
+     *
+     * 速率限制的 burst size ，使用令牌桶算法。
      */
     int getRateLimiterBurstSize();
 
     /**
      * Rate limiter, token bucket algorithm property. Specifies the average enforced request rate.
      * See also {@link #getRateLimiterBurstSize()}.
+     * 增量拉取注册信息的速率限制。
      */
     int getRateLimiterRegistryFetchAverageRate();
 
     /**
      * Rate limiter, token bucket algorithm property. Specifies the average enforced request rate.
      * See also {@link #getRateLimiterBurstSize()}.
+     *
+     * 全量拉取注册信息的速率限制。
      */
     int getRateLimiterFullFetchAverageRate();
 

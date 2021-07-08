@@ -59,6 +59,8 @@ public class StatusFilter implements Filter {
                          FilterChain chain) throws IOException, ServletException {
         InstanceInfo myInfo = ApplicationInfoManager.getInstance().getInfo();
         InstanceStatus status = myInfo.getStatus();
+
+        //
         if (status != InstanceStatus.UP && response instanceof HttpServletResponse) {
             HttpServletResponse httpRespone = (HttpServletResponse) response;
             httpRespone.sendError(SC_TEMPORARY_REDIRECT,

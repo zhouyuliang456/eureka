@@ -57,6 +57,7 @@ public class ServerRequestAuthFilter implements Filter {
         // nothing to do here
     }
 
+    // 请求认证过滤器
     protected void logAuth(ServletRequest request) {
         if (serverConfig.shouldLogIdentityHeaders()) {
             if (request instanceof HttpServletRequest) {

@@ -7,8 +7,8 @@ buildscript {
 }
 
 plugins {
-    id 'nebula.netflixoss' version '5.1.1'
-    id 'org.akhikhl.gretty' version "2.0.0"
+    id 'nebula.netflixoss' version '5.0.0'
+    id 'org.akhikhl.gretty' version '2.0.0'
 }
 
 idea {
@@ -75,3 +75,23 @@ subprojects {
     }
 }
 
+plugins {
+    id 'java'
+}
+
+apply plugin: 'maven'
+
+group 'com.lyh'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
+}

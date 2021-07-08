@@ -14,13 +14,20 @@ import java.util.Map;
 
 /**
  * @author Tomasz Bak
+ *
+ * 应用实例注册表接口 提供应用实例的注册与发现服务。
  */
 public interface InstanceRegistry extends LeaseManager<InstanceInfo>, LookupService<String> {
 
+    // ====== 开启与关闭相关 ======
     void openForTraffic(ApplicationInfoManager applicationInfoManager, int count);
 
     void shutdown();
 
+    void clearRegistry();
+
+
+    // ====== 应用实例状态变更相关 ======
     @Deprecated
     void storeOverriddenStatusIfRequired(String id, InstanceStatus overriddenStatus);
 
@@ -34,6 +41,7 @@ public interface InstanceRegistry extends LeaseManager<InstanceInfo>, LookupServ
 
     Map<String, InstanceStatus> overriddenInstanceStatusesSnapshot();
 
+    // ====== 响应缓存相关 ======
     Applications getApplicationsFromLocalRegionOnly();
 
     List<Application> getSortedApplications();
@@ -70,28 +78,24 @@ public interface InstanceRegistry extends LeaseManager<InstanceInfo>, LookupServ
      */
     InstanceInfo getInstanceByAppAndId(String appName, String id, boolean includeRemoteRegions);
 
-    void clearRegistry();
-
     void initializedResponseCache();
 
     ResponseCache getResponseCache();
 
+    // ====== 自我保护模式相关 ======
     long getNumOfRenewsInLastMin();
 
     int getNumOfRenewsPerMinThreshold();
 
     int isBelowRenewThresold();
 
+    boolean isSelfPreservationModeEnabled();
+
+    boolean isLeaseExpirationEnabled();
+
+    // ====== 调试/监控相关 ======
     List<Pair<Long, String>> getLastNRegisteredInstances();
 
     List<Pair<Long, String>> getLastNCanceledInstances();
-
-    /**
-     * Checks whether lease expiration is enabled.
-     * @return true if enabled
-     */
-    boolean isLeaseExpirationEnabled();
-
-    boolean isSelfPreservationModeEnabled();
 
 }
